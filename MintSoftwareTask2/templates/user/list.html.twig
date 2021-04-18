@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}List of users{% endblock %}
+
+{% block body %}
+{% for flash in app.flashes('switch_enabling') %}
+    <div class="alert" role="alert">{{ flash }}</div>
+{% endfor %}
+<div class="count">
+    counter: {{ pagination.getTotalItemCount }}
+</div>
+<table>
+    <tr>
+        {# sorting of properties based on query components #}
+        <th>ID</th>
+        <th>Username</th>
+        <th>Enabled</th>
+    </tr>
+
+    {# table body #}
+    {% for user in pagination %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>
+                <a href="{{ path('app_user_switch_enabling', {userId: user.id, page: app.request.get('page')}) }}">
+                    {{ user.enabled ? 'TRUE' : 'FALSE' }}
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+<div class="navigation">
+    {{ knp_pagination_render(pagination) }}
+</div>
+{% endblock %}
